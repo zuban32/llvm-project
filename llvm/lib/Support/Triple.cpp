@@ -71,6 +71,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case x86:            return "i386";
   case x86_64:         return "x86_64";
   case xcore:          return "xcore";
+  case zvm:            return "zvm";
   }
 
   llvm_unreachable("Invalid ArchType!");
@@ -706,6 +707,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::thumbeb:
   case Triple::ve:
   case Triple::xcore:
+  case Triple::zvm:
     return Triple::ELF;
 
   case Triple::ppc64:
@@ -1267,6 +1269,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::wasm32:
   case llvm::Triple::x86:
   case llvm::Triple::xcore:
+  case llvm::Triple::zvm:
     return 32;
 
   case llvm::Triple::aarch64:
@@ -1350,6 +1353,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::wasm32:
   case Triple::x86:
   case Triple::xcore:
+  case Triple::zvm:
     // Already 32-bit.
     break;
 
@@ -1388,6 +1392,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::tce:
   case Triple::tcele:
   case Triple::xcore:
+  case Triple::zvm:
     T.setArch(UnknownArch);
     break;
 

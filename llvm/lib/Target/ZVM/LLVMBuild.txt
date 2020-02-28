@@ -1,0 +1,20 @@
+[common]
+subdirectories = MCTargetDesc TargetInfo  
+
+[component_0]
+type = TargetGroup
+name = ZVM
+parent = Target
+
+[component_1]
+type = Library
+name = ZVMCodeGen
+parent = ZVM
+required_libraries =
+                     CodeGen Core MC 
+                     ZVMDesc 
+                     ZVMInfo 
+                     SelectionDAG 
+                     Support 
+                     Target
+add_to_library_groups = ZVM
