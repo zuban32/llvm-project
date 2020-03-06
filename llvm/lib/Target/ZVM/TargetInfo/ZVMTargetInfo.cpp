@@ -1,9 +1,12 @@
-#include "llvm/IR/Module.h"
+#include "TargetInfo/ZVMTargetInfo.h"
 #include "llvm/Support/TargetRegistry.h"
 
-Target llvm::getTheZVMTarget();
+llvm::Target &llvm::getTheZVMTarget() {
+  static Target TheZVMTarget;
+  return TheZVMTarget;
+}
 
 extern "C" void LLVMInitializeZVMTargetInfo() {
-  RegisterTarget<llvm::Triple::zvm, false>
-    X(getTheZVMTarget(), "zvm", "ZVM");
+  llvm::RegisterTarget<llvm::Triple::zvm, false>
+    X(llvm::getTheZVMTarget(), "zvm", "ZVM", "zvm");
 }
