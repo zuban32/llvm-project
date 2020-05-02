@@ -1,7 +1,7 @@
 /*
  * ZVMMCTargetDesc.h
  *
- *  Created on: 6 мар. 2020 г.
+ *  Created on: 6 пїЅпїЅпїЅ. 2020 пїЅ.
  *      Author: zuban
  */
 
@@ -47,10 +47,10 @@ std::unique_ptr<MCObjectTargetWriter> createZVMELFObjectWriter(bool Is64Bit,
 // Defines symbolic names for the ZVM instructions.
 //
 #define GET_INSTRINFO_ENUM
-//#include "ZVMGenInstrInfo.inc"
+#include "ZVMGenInstrInfo.inc"
 
 #define GET_SUBTARGETINFO_ENUM
-//#include "ZVMGenSubtargetInfo.inc"
+#include "ZVMGenSubtargetInfo.inc"
 
 
 #endif /* LIB_TARGET_ZVM_MCTARGETDESC_ZVMMCTARGETDESC_H_ */

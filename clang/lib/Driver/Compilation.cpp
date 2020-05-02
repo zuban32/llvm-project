@@ -63,6 +63,7 @@ Compilation::getArgsForToolChain(const ToolChain *TC, StringRef BoundArch,
                                  Action::OffloadKind DeviceOffloadKind) {
   if (!TC)
     TC = &DefaultToolChain;
+  llvm::errs() << "Bound arch: " << BoundArch << "\n";
 
   DerivedArgList *&Entry = TCArgs[{TC, BoundArch, DeviceOffloadKind}];
   if (!Entry) {

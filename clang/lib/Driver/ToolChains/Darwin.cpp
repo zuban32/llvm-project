@@ -26,6 +26,8 @@
 #include "llvm/Support/VirtualFileSystem.h"
 #include <cstdlib> // ::getenv
 
+#include <iostream>
+
 using namespace clang::driver;
 using namespace clang::driver::tools;
 using namespace clang::driver::toolchains;
@@ -65,6 +67,7 @@ llvm::Triple::ArchType darwin::getArchTypeForMachOArchName(StringRef Str) {
       .Case("nvptx64", llvm::Triple::nvptx64)
       .Case("amdil", llvm::Triple::amdil)
       .Case("spir", llvm::Triple::spir)
+	  .Case("zvm", llvm::Triple::zvm)
       .Default(llvm::Triple::UnknownArch);
 }
 
@@ -81,6 +84,7 @@ void darwin::setTripleTypeForMachOArchName(llvm::Triple &T, StringRef Str) {
     T.setOS(llvm::Triple::UnknownOS);
     T.setObjectFormat(llvm::Triple::MachO);
   }
+  llvm::errs() << T.str() << "\n";
 }
 
 void darwin::Assembler::ConstructJob(Compilation &C, const JobAction &JA,
@@ -879,6 +883,7 @@ std::string Darwin::ComputeEffectiveClangTriple(const ArgList &Args,
     Str += "macosx";
   Str += getTargetVersion().getAsString();
   Triple.setOSName(Str);
+
 
   return Triple.getTriple();
 }
@@ -1840,6 +1845,7 @@ void Darwin::AddDeploymentTarget(DerivedArgList &Args) const {
       OSTarget->canInferSimulatorFromArch() && getTriple().isX86())
     Environment = Simulator;
 
+  std::cerr << "set target\n";
   setTarget(Platform, Environment, Major, Minor, Micro);
 
   if (const Arg *A = Args.getLastArg(options::OPT_isysroot)) {
@@ -2379,14 +2385,16 @@ void Darwin::addClangTargetOptions(const llvm::opt::ArgList &DriverArgs,
 DerivedArgList *
 Darwin::TranslateArgs(const DerivedArgList &Args, StringRef BoundArch,
                       Action::OffloadKind DeviceOffloadKind) const {
+    std::cerr << "Darwin transl args\n";
   // First get the generic Apple args, before moving onto Darwin-specific ones.
   DerivedArgList *DAL =
       MachO::TranslateArgs(Args, BoundArch, DeviceOffloadKind);
   const OptTable &Opts = getDriver().getOpts();
 
   // If no architecture is bound, none of the translations here are relevant.
-  if (BoundArch.empty())
+  if (BoundArch.empty()) {
     return DAL;
+  }
 
   // Add an explicit version min argument for the deployment target. We do this
   // after argument translation because -Xarch_ arguments may add a version min

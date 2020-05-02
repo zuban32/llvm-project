@@ -57,6 +57,7 @@ class LLVMProjectInfo(object):
             # Load the LLVMBuild file.
             llvmbuild_path = os.path.join(llvmbuild_source_root + subpath,
                                           'LLVMBuild.txt')
+            #print (llvmbuild_path)
             if not os.path.exists(llvmbuild_path):
                 fatal("missing LLVMBuild.txt file at: %r" % (llvmbuild_path,))
 

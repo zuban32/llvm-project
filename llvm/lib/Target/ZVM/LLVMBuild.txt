@@ -5,16 +5,17 @@ subdirectories = MCTargetDesc TargetInfo
 type = TargetGroup
 name = ZVM
 parent = Target
+has_asmprinter = 1
 
 [component_1]
 type = Library
 name = ZVMCodeGen
 parent = ZVM
-required_libraries =
-                     CodeGen Core MC 
+required_libraries = AsmPrinter
+					 CodeGen Core MC 
                      ZVMDesc 
-                     ZVMInfo 
-                     SelectionDAG 
+                     ZVMInfo
                      Support 
                      Target
+                     GlobalISel
 add_to_library_groups = ZVM

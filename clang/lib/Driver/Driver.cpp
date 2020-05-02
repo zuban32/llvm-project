@@ -431,8 +431,10 @@ static llvm::Triple computeTargetTriple(const Driver &D,
       TargetTriple.find("-pc-gnu") != StringRef::npos)
     Target.setOSName("hurd");
 
+  llvm::errs() << TargetTriple << ", " << Target.str() << ", bf = " << Target.getObjectFormat() << "\n";
   // Handle Apple-specific options available here.
   if (Target.isOSBinFormatMachO()) {
+      llvm::errs() << "macho format\n";
     // If an explicit Darwin arch name is given, that trumps all.
     if (!DarwinArchName.empty()) {
       tools::darwin::setTripleTypeForMachOArchName(Target, DarwinArchName);
@@ -3745,6 +3747,7 @@ void Driver::BuildJobs(Compilation &C) const {
         LinkingOutput = getDefaultImageName();
     }
 
+    llvm::errs() << "1\n";
     BuildJobsForAction(C, A, &C.getDefaultToolChain(),
                        /*BoundArch*/ StringRef(),
                        /*AtTopLevel*/ true,
@@ -4179,6 +4182,7 @@ InputInfo Driver::BuildJobsForActionNoCache(
       InputInfo DevA;
       OA->doOnEachDeviceDependence([&](Action *DepA, const ToolChain *DepTC,
                                        const char *DepBoundArch) {
+          llvm::errs() << "2\n";
         DevA =
             BuildJobsForAction(C, DepA, DepTC, DepBoundArch, AtTopLevel,
                                /*MultipleArchs*/ !!DepBoundArch, LinkingOutput,
@@ -4194,6 +4198,7 @@ InputInfo Driver::BuildJobsForActionNoCache(
     OA->doOnEachDependence(
         /*IsHostDependence=*/BuildingForOffloadDevice,
         [&](Action *DepA, const ToolChain *DepTC, const char *DepBoundArch) {
+        llvm::errs() << "3\n";
           OffloadDependencesInputInfo.push_back(BuildJobsForAction(
               C, DepA, DepTC, DepBoundArch, /*AtTopLevel=*/false,
               /*MultipleArchs*/ !!DepBoundArch, LinkingOutput, CachedResults,
@@ -4228,6 +4233,7 @@ InputInfo Driver::BuildJobsForActionNoCache(
     else
       TC = &C.getDefaultToolChain();
 
+    llvm::errs() << "4\n";
     return BuildJobsForAction(C, *BAA->input_begin(), TC, ArchName, AtTopLevel,
                               MultipleArchs, LinkingOutput, CachedResults,
                               TargetDeviceOffloadKind);
@@ -4252,6 +4258,7 @@ InputInfo Driver::BuildJobsForActionNoCache(
     cast<OffloadAction>(OA)->doOnEachDependence(
         /*IsHostDependence=*/BuildingForOffloadDevice,
         [&](Action *DepA, const ToolChain *DepTC, const char *DepBoundArch) {
+      llvm::errs() << "5\n";
           OffloadDependencesInputInfo.push_back(BuildJobsForAction(
               C, DepA, DepTC, DepBoundArch, /* AtTopLevel */ false,
               /*MultipleArchs=*/!!DepBoundArch, LinkingOutput, CachedResults,
@@ -4266,6 +4273,7 @@ InputInfo Driver::BuildJobsForActionNoCache(
     // FIXME: Clean this up.
     bool SubJobAtTopLevel =
         AtTopLevel && (isa<DsymutilJobAction>(A) || isa<VerifyJobAction>(A));
+    llvm::errs() << "6\n";
     InputInfos.push_back(BuildJobsForAction(
         C, Input, TC, BoundArch, SubJobAtTopLevel, MultipleArchs, LinkingOutput,
         CachedResults, A->getOffloadingDeviceKind()));
