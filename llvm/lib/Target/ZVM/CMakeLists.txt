@@ -16,6 +16,7 @@ add_llvm_target(ZVMCodeGen
 	ZVMAsmPrinter.cpp
 	ZVMTargetLowering.cpp
 	ZVMInstrInfo.cpp
+	ZVMCallLowering.cpp
 )
 
 add_subdirectory(TargetInfo)

@@ -1,4 +1,5 @@
 #include "ZVMSubtarget.h"
+#include "ZVMCallLowering.h"
 #include "ZVMTargetLowering.h"
 
 #define DEBUG_TYPE "zvm-subtarget"
@@ -11,4 +12,11 @@ using namespace llvm;
 
 ZVMSubtarget::ZVMSubtarget(const Triple &TT, const std::string &CPU,
                            const std::string &FS, const TargetMachine &TM)
-    : ZVMGenSubtargetInfo(TT, CPU, FS), FrameLowering(*this), TLInfo(TM, *this) {}
+    : ZVMGenSubtargetInfo(TT, CPU, FS), FrameLowering(*this),
+      TLInfo(TM, *this) {
+  CallLoweringInfo.reset(new ZVMCallLowering(*getTargetLowering()));
+}
+
+const CallLowering *ZVMSubtarget::getCallLowering() const {
+  return CallLoweringInfo.get();
+}
