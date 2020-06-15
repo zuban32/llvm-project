@@ -17,6 +17,7 @@ add_llvm_target(ZVMCodeGen
 	ZVMTargetLowering.cpp
 	ZVMInstrInfo.cpp
 	ZVMCallLowering.cpp
+	ZVMLegalizerInfo.cpp
 )
 
 add_subdirectory(TargetInfo)
