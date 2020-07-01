@@ -77,7 +77,7 @@ static Error unsupported(const char *Str, const Triple &T) {
 Expected<uint32_t> MachO::getCPUType(const Triple &T) {
   if (!T.isOSBinFormatMachO())
     return unsupported("type", T);
-  if (T.isX86() && T.isArch32Bit())
+  if (T.isX86() && T.isArch32Bit()|| T.getArch() == Triple::zvm)
     return MachO::CPU_TYPE_X86;
   if (T.isX86() && T.isArch64Bit())
     return MachO::CPU_TYPE_X86_64;
@@ -97,7 +97,7 @@ Expected<uint32_t> MachO::getCPUType(const Triple &T) {
 Expected<uint32_t> MachO::getCPUSubType(const Triple &T) {
   if (!T.isOSBinFormatMachO())
     return unsupported("subtype", T);
-  if (T.isX86())
+  if (T.isX86() || T.getArch() == Triple::zvm)
     return getX86SubType(T);
   if (T.isARM() || T.isThumb())
     return getARMSubType(T);

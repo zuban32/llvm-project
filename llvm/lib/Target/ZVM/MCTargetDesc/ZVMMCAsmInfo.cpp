@@ -22,3 +22,7 @@ using namespace llvm;
 ZVMMCAsmInfoELF::ZVMMCAsmInfoELF() {
   CodePointerSize = 4;
 }
+
+ZVMMCAsmInfoDarwin::ZVMMCAsmInfoDarwin() {
+  CodePointerSize = 4;
+}

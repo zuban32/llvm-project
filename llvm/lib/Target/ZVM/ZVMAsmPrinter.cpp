@@ -1,6 +1,8 @@
 #include "ZVMInstrInfo.h"
 // #include "ZVMMCInstLower.h"
 #include "ZVMTargetMachine.h"
+#include "TargetInfo/ZVMTargetInfo.h"
+#include "MCTargetDesc/ZVMTargetStreamer.h"
 #include "MCTargetDesc/ZVMInstPrinter.h"
 #include "TargetInfo/ZVMTargetInfo.h"
 #include "llvm/CodeGen/AsmPrinter.h"
@@ -20,19 +22,26 @@ using namespace llvm;
 
 namespace {
 class ZVMAsmPrinter : public AsmPrinter {
+  ZVMTargetStreamer &getTargetStreamer() {
+    return static_cast<ZVMTargetStreamer &>(*OutStreamer->getTargetStreamer());
+  }
+
 public:
   explicit ZVMAsmPrinter(TargetMachine &TM,
                          std::unique_ptr<MCStreamer> Streamer)
       : AsmPrinter(TM, std::move(Streamer)) {}
 
-  StringRef getPassName() const override { return "ZVM Assembly Printer"; }
   bool doInitialization(Module &M) override;
+
+  StringRef getPassName() const override { return "ZVM Assembly Printer"; }
   void printOperand(const MachineInstr *MI, int OpNum, raw_ostream &O);
+
   bool PrintAsmOperand(const MachineInstr *MI, unsigned OpNo,
                        const char *ExtraCode, raw_ostream &O) override;
   bool PrintAsmMemoryOperand(const MachineInstr *MI, unsigned OpNum,
                              const char *ExtraCode, raw_ostream &O) override;
 
+  void emitFunctionBodyStart() override;
   void emitInstruction(const MachineInstr *MI) override;
 };
 } // namespace
@@ -169,7 +178,11 @@ void ZVMAsmPrinter::emitInstruction(const MachineInstr *MI) {
   EmitToStreamer(*OutStreamer, TmpInst);
 }
 
+void ZVMAsmPrinter::emitFunctionBodyStart() {
+
+}
+
 // Force static initialization.
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeZVMAsmPrinter() {
-  RegisterAsmPrinter<ZVMAsmPrinter>(getTheZVMTarget());
+  RegisterAsmPrinter<ZVMAsmPrinter> X(getTheZVMTarget());
 }

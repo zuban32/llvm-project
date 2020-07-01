@@ -603,6 +603,11 @@ TargetInfo *AllocateTarget(const llvm::Triple &Triple,
       default:
         return nullptr;
     }
+  case llvm::Triple::zvm:
+      if (Triple.isOSDarwin() || Triple.isOSBinFormatMachO())
+        return new DarwinX86_64TargetInfo(Triple, Opts);
+      else
+        return nullptr;
 
   case llvm::Triple::renderscript32:
     return new LinuxTargetInfo<RenderScript32TargetInfo>(Triple, Opts);

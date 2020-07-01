@@ -9,6 +9,8 @@
 #include "ZVMFrameLowering.h"
 #include "ZVMTargetLowering.h"
 #include "ZVMInstrInfo.h"
+#include "ZVMLegalizerInfo.h"
+#include "ZVMRegisterBankInfo.h"
 
 #define GET_SUBTARGETINFO_HEADER
 #include "ZVMGenSubtargetInfo.inc"
@@ -22,9 +24,9 @@ class ZVMSubtarget : public ZVMGenSubtargetInfo {
   ZVMTargetLowering TLInfo;
 
   std::unique_ptr<CallLowering> CallLoweringInfo;
-  // std::unique_ptr<InstructionSelector> InstSelector;
-  // std::unique_ptr<LegalizerInfo> Legalizer;
-  // std::unique_ptr<RegisterBankInfo> RegBankInfo;
+  std::unique_ptr<InstructionSelector> InstSelector;
+  std::unique_ptr<LegalizerInfo> Legalizer;
+  std::unique_ptr<RegisterBankInfo> RegBankInfo;
 
 public:
   ZVMSubtarget(const Triple &TT, const std::string &CPU,
@@ -42,14 +44,14 @@ public:
     return &TLInfo;
   }
   const ZVMInstrInfo *getInstrInfo() const override { return &InstrInfo; }
-  const TargetRegisterInfo *getRegisterInfo() const override {
+  const ZVMRegisterInfo *getRegisterInfo() const override {
     return &InstrInfo.getRegisterInfo();
   }
 
   const CallLowering *getCallLowering() const override;
-  // InstructionSelector *getInstructionSelector() const override;
-  // const LegalizerInfo *getLegalizerInfo() const override;
-  // const RegisterBankInfo *getRegBankInfo() const override;
+  InstructionSelector *getInstructionSelector() const override;
+  const LegalizerInfo *getLegalizerInfo() const override;
+  const RegisterBankInfo *getRegBankInfo() const override;
 };
 
 

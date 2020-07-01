@@ -447,6 +447,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("ve", Triple::ve)
     .Case("wasm32", Triple::wasm32)
     .Case("wasm64", Triple::wasm64)
+    .Case("zvm", Triple::zvm)
     .Default(Triple::UnknownArch);
 
   // Some architectures require special parsing logic just to compute the
@@ -707,11 +708,9 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::thumbeb:
   case Triple::ve:
   case Triple::xcore:
-  case Triple::zvm:
-    return Triple::ELF;
-
   case Triple::ppc64:
   case Triple::ppc:
+  case Triple::zvm:
     if (T.isOSDarwin())
       return Triple::MachO;
     else if (T.isOSAIX())
@@ -1568,6 +1567,7 @@ bool Triple::isLittleEndian() const {
   case Triple::x86:
   case Triple::x86_64:
   case Triple::xcore:
+  case Triple::zvm:
     return true;
   default:
     return false;

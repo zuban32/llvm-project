@@ -12,10 +12,13 @@ type = Library
 name = ZVMCodeGen
 parent = ZVM
 required_libraries = AsmPrinter
-					 CodeGen Core MC 
+					 CodeGen
+                     Core
+                     MC 
                      ZVMDesc 
                      ZVMInfo
                      Support 
                      Target
+                     SelectionDAG
                      GlobalISel
 add_to_library_groups = ZVM

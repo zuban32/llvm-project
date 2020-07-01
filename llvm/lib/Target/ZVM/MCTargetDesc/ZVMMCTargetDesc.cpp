@@ -32,11 +32,13 @@ static MCRegisterInfo *createZVMMCRegisterInfo(const Triple &TT) {
 }
 
 static MCAsmInfo *createZVMMCAsmInfo(const MCRegisterInfo &MRI,
-                                         const Triple &TheTriple,
-                                         const MCTargetOptions &Options) {
+                                     const Triple &TheTriple,
+                                     const MCTargetOptions &Options) {
   MCAsmInfo *MAI;
   if (TheTriple.isOSBinFormatELF())
     MAI = new ZVMMCAsmInfoELF();
+  else if (TheTriple.isOSBinFormatMachO())
+    MAI = new ZVMMCAsmInfoDarwin();
   else
     report_fatal_error("invalid target");
 

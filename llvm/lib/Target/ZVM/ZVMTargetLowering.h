@@ -1,10 +1,11 @@
 #ifndef LLVM_LIB_TARGET_ZVM_BPFTARGETLOWERING_H
 #define LLVM_LIB_TARGET_ZVM_BPFTARGETLOWERING_H
 
-#include "ZVM.h"
 #include "llvm/CodeGen/TargetLowering.h"
 
 namespace llvm {
+
+class ZVMSubtarget;
 
 class ZVMTargetLowering : public TargetLowering {
 public:

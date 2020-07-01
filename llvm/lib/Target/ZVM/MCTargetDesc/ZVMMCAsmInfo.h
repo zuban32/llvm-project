@@ -14,6 +14,7 @@
 #define LLVM_LIB_TARGET_ZVM_MCTARGETDESC_ZVMMCASMINFO_H
 
 #include "llvm/MC/MCAsmInfoELF.h"
+#include "llvm/MC/MCAsmInfoDarwin.h"
 
 namespace llvm {
 class MCStreamer;
@@ -23,6 +24,11 @@ class Triple;
 struct ZVMMCAsmInfoELF : public MCAsmInfoELF {
   explicit ZVMMCAsmInfoELF();
 };
+
+struct ZVMMCAsmInfoDarwin : public MCAsmInfoDarwin {
+  explicit ZVMMCAsmInfoDarwin();
+};
+
 } // namespace llvm
 
 #endif

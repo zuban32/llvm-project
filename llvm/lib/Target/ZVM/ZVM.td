@@ -1,6 +1,7 @@
 include "llvm/Target/Target.td"
 
 include "ZVMRegisterInfo.td"
+include "ZVMRegisterBanks.td"
 include "ZVMInstrInfo.td"
 
 def ZVMInstrInfo : InstrInfo;

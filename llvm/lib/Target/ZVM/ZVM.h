@@ -1,12 +1,17 @@
 #ifndef LLVM_LIB_TARGET_ZVM_ZVM_H
 #define LLVM_LIB_TARGET_ZVM_ZVM_H
 
-#include "MCTargetDesc/ZVMMCTargetDesc.h"
-#include "llvm/Support/DataTypes.h"
-#include "llvm/Target/TargetMachine.h"
+#include "llvm/CodeGen/GlobalISel/InstructionSelector.h"
+
+#include "ZVMSubtarget.h"
+#include "ZVMTargetMachine.h"
+#include "ZVMRegisterBankInfo.h"
 
 namespace llvm {
-    class ZVMSubtarget;
-}
+
+InstructionSelector *createZVMInstructionSelector(const ZVMTargetMachine &,
+                                                  ZVMSubtarget &,
+                                                  ZVMRegisterBankInfo &);
+} // namespace llvm
 
 #endif
